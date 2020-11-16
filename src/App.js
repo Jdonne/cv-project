@@ -6,22 +6,33 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contact: { name: "", email: "f", phone: "g" },
+      contact: { name: "", email: "", phone: "", submitted: "" },
     };
     this.contactObj = this.state.contact;
   }
 
   handleContactChange = (e) => {
-    if (e.target.id == "name") {
+    if (e.target.id === "name") {
       this.contactObj.name = e.target.value;
-      this.setState({ contact: this.contactObj });
-    } else if (e.target.id == "email") {
+    } else if (e.target.id === "email") {
       this.contactObj.email = e.target.value;
-      this.setState({ contact: this.contactObj });
-    } else if (e.target.id == "phone") {
+    } else if (e.target.id === "phone") {
       this.contactObj.phone = e.target.value;
-      this.setState({ contact: this.contactObj });
     }
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.contactObj.submitted = "hidden";
+    this.setState({ contact: this.contactObj });
+    // this.contactObj = { name: "", email: "", phone: "" };
+    // e.target.reset();
+  };
+
+  handleEdit = (e) => {
+    this.contactObj.submitted = "";
+    this.setState({ contact: this.contactObj });
+    // this.nameEdit.current.value = this.contactObj.name;
   };
 
   //give the setState to a submit function?
@@ -33,7 +44,10 @@ class App extends Component {
           name={this.state.contact.name}
           email={this.state.contact.email}
           phone={this.state.contact.phone}
+          submitted={this.state.contact.submitted}
           handleContact={this.handleContactChange}
+          handleSubmit={this.handleSubmit}
+          handleEdit={this.handleEdit}
         />
       </React.Fragment>
     );
