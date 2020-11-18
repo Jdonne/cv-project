@@ -58,6 +58,7 @@ class App extends Component {
     // this.nameEdit.current.value = this.contactObj.name;
   };
 
+  // updates experience input values
   handleExpChange = (e) => {
     if (e.target.id === "company") {
       this.expObj.company = e.target.value;
@@ -71,11 +72,15 @@ class App extends Component {
       this.expObj.end = e.target.value;
     }
   };
-
+  // submits values to state/display
   handleExpSubmit = (e) => {
     e.preventDefault();
     this.expObj.submitted = "hidden";
-    this.expArr = this.expArr.concat(this.expObj);
+    if (e.target.id != this.expArr.length - 1) {
+      this.expArr = this.expArr.concat(this.expObj);
+    } else if (e.target.id == this.expArr.length - 1) {
+      this.expArr[e.target.id] = this.expObj;
+    }
     this.setState({ experience: this.expArr }, function () {
       console.log(this.state.experience);
     });
@@ -88,6 +93,7 @@ class App extends Component {
       submitted: "",
     };
   };
+  // adds additional experience section
   handleExpAdd = (e) => {
     this.setState({
       experience: this.state.experience.concat({
@@ -99,7 +105,13 @@ class App extends Component {
         submitted: "",
       }),
     });
-    console.log(this.state.experience);
+  };
+  // edit functionality for individual experience
+  handleExpEdit = (e) => {
+    this.expObj = this.expArr[e.target.id];
+    this.expObj.submitted = "";
+    this.expArr[e.target.id] = this.expObj;
+    this.setState({ experience: this.expArr });
   };
 
   render() {
@@ -118,6 +130,7 @@ class App extends Component {
         <h1>Experience</h1>
         {this.state.experience.map((ex, index) => (
           <Experience
+            index={index}
             key={index}
             company={ex.company}
             position={ex.position}
@@ -128,6 +141,7 @@ class App extends Component {
             handleChange={this.handleExpChange}
             handleSubmit={this.handleExpSubmit}
             handleAdd={this.handleExpAdd}
+            handleEdit={this.handleExpEdit}
           />
         ))}
         <button onClick={this.handleExpAdd}>Add </button>

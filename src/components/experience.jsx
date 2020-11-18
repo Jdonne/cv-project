@@ -10,8 +10,9 @@ class Experience extends Component {
       end,
       handleChange,
       handleSubmit,
-      //   handleAdd,
+      handleEdit,
       submitted,
+      index,
     } = this.props;
     return (
       <React.Fragment>
@@ -22,8 +23,11 @@ class Experience extends Component {
           <div>
             Duration: {" " + start} - {end}
           </div>
+          <button onClick={handleEdit} id={index}>
+            Edit
+          </button>
         </div>
-        <form onSubmit={handleSubmit} className={submitted}>
+        <form onSubmit={handleSubmit} className={submitted} id={index}>
           <label>
             Company
             <input type="text" id="company" onChange={handleChange} />
