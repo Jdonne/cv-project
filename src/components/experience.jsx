@@ -46,11 +46,11 @@ class Experience extends Component {
           </label>
           <label>
             Start Date
-            <input type="date" id="start" onChange={handleChange} />
+            <input type="date" id="expStart" onChange={handleChange} />
           </label>
           <label>
             End Date
-            <input type="date" id="end" onChange={handleChange} />
+            <input type="date" id="expEnd" onChange={handleChange} />
           </label>
           <button type="submit">Submit</button>
         </form>

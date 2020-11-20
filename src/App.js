@@ -2,6 +2,7 @@ import "./App.css";
 import React, { Component } from "react";
 import Contact from "./components/contact";
 import Experience from "./components/experience";
+import Education from "./components/education";
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
           submitted: "",
         },
       ],
+      education: [{ name: "", study: "", start: "", end: "", submitted: "" }],
     };
     this.contactObj = this.state.contact;
     this.expObj = {
@@ -29,6 +31,8 @@ class App extends Component {
       submitted: "",
     };
     this.expArr = [];
+    this.eduObj = { name: "", study: "", start: "", end: "", submitted: "" };
+    this.eduArr = [];
   }
 
   //updates contact input values
@@ -66,9 +70,9 @@ class App extends Component {
       this.expObj.position = e.target.value;
     } else if (e.target.id === "tasks") {
       this.expObj.tasks = e.target.value;
-    } else if (e.target.id === "start") {
+    } else if (e.target.id === "expStart") {
       this.expObj.start = e.target.value;
-    } else if (e.target.id === "end") {
+    } else if (e.target.id === "expEnd") {
       this.expObj.end = e.target.value;
     }
   };
@@ -114,6 +118,59 @@ class App extends Component {
     this.setState({ experience: this.expArr });
   };
 
+  // updates education input
+
+  handleEduChange = (e) => {
+    if (e.target.id === "eduName") {
+      this.eduObj.name = e.target.value;
+    } else if (e.target.id === "study") {
+      this.eduObj.study = e.target.value;
+    } else if (e.target.id === "eduStart") {
+      this.eduObj.start = e.target.value;
+    } else if (e.target.id === "eduEnd") {
+      this.eduObj.end = e.target.value;
+    }
+  };
+  // submits values to state/display
+  handleEduSubmit = (e) => {
+    e.preventDefault();
+    this.eduObj.submitted = "hidden";
+    if (e.target.id != this.eduArr.length - 1) {
+      this.eduArr = this.eduArr.concat(this.eduObj);
+    } else if (e.target.id == this.eduArr.length - 1) {
+      this.eduArr[e.target.id] = this.eduObj;
+    }
+    this.setState({ education: this.eduArr }, function () {
+      console.log(this.state.education);
+    });
+    this.eduObj = {
+      name: "",
+      study: "",
+      start: "",
+      end: "",
+      submitted: "",
+    };
+  };
+  // adds additional education section
+  handleEduAdd = (e) => {
+    this.setState({
+      education: this.state.education.concat({
+        name: "",
+        study: "",
+        start: "",
+        end: "",
+        submitted: "",
+      }),
+    });
+  };
+  // edit functionality for individual education section
+  handleEduEdit = (e) => {
+    this.eduObj = this.eduArr[e.target.id];
+    this.eduObj.submitted = "";
+    this.eduArr[e.target.id] = this.eduObj;
+    this.setState({ education: this.eduArr });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -145,6 +202,23 @@ class App extends Component {
           />
         ))}
         <button onClick={this.handleExpAdd}>Add </button>
+        <h1>Education</h1>
+        {this.state.education.map((ed, index) => (
+          <Education
+            index={index}
+            key={index}
+            name={ed.name}
+            study={ed.study}
+            start={ed.start}
+            end={ed.end}
+            submitted={ed.submitted}
+            handleChange={this.handleEduChange}
+            handleSubmit={this.handleEduSubmit}
+            handleAdd={this.handleEduAdd}
+            handleEdit={this.handleEduEdit}
+          />
+        ))}
+        <button onClick={this.handleEduAdd}>Add </button>
       </React.Fragment>
     );
   }
