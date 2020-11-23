@@ -1,3 +1,7 @@
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.addBtn {
+  width: 12.5%;
 }

@@ -8,7 +8,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contact: { name: "", email: "", phone: "", submitted: "" },
+      contact: {
+        name: "",
+        email: "",
+        phone: "",
+        submitted: "",
+        displayed: "hidden",
+      },
       experience: [
         {
           company: "",
@@ -17,9 +23,19 @@ class App extends Component {
           start: "",
           end: "",
           submitted: "",
+          displayed: "hidden",
         },
       ],
-      education: [{ name: "", study: "", start: "", end: "", submitted: "" }],
+      education: [
+        {
+          name: "",
+          study: "",
+          start: "",
+          end: "",
+          submitted: "",
+          displayed: "hidden",
+        },
+      ],
     };
     this.contactObj = this.state.contact;
     this.expObj = {
@@ -29,9 +45,17 @@ class App extends Component {
       start: "",
       end: "",
       submitted: "",
+      displayed: "hidden",
     };
     this.expArr = [];
-    this.eduObj = { name: "", study: "", start: "", end: "", submitted: "" };
+    this.eduObj = {
+      name: "",
+      study: "",
+      start: "",
+      end: "",
+      submitted: "",
+      displayed: "hidden",
+    };
     this.eduArr = [];
   }
 
@@ -50,9 +74,8 @@ class App extends Component {
   handleContactSubmit = (e) => {
     e.preventDefault();
     this.contactObj.submitted = "hidden";
+    this.contactObj.displayed = "";
     this.setState({ contact: this.contactObj });
-    // this.contactObj = { name: "", email: "", phone: "" };
-    // e.target.reset();
   };
 
   // edits contact info
@@ -80,11 +103,8 @@ class App extends Component {
   handleExpSubmit = (e) => {
     e.preventDefault();
     this.expObj.submitted = "hidden";
-    if (e.target.id != this.expArr.length - 1) {
-      this.expArr = this.expArr.concat(this.expObj);
-    } else if (e.target.id == this.expArr.length - 1) {
-      this.expArr[e.target.id] = this.expObj;
-    }
+    this.expObj.displayed = "";
+    this.expArr[e.target.id] = this.expObj;
     this.setState({ experience: this.expArr }, function () {
       console.log(this.state.experience);
     });
@@ -107,6 +127,7 @@ class App extends Component {
         start: "",
         end: "",
         submitted: "",
+        displayed: "hidden",
       }),
     });
   };
@@ -119,7 +140,6 @@ class App extends Component {
   };
 
   // updates education input
-
   handleEduChange = (e) => {
     if (e.target.id === "eduName") {
       this.eduObj.name = e.target.value;
@@ -135,11 +155,8 @@ class App extends Component {
   handleEduSubmit = (e) => {
     e.preventDefault();
     this.eduObj.submitted = "hidden";
-    if (e.target.id != this.eduArr.length - 1) {
-      this.eduArr = this.eduArr.concat(this.eduObj);
-    } else if (e.target.id == this.eduArr.length - 1) {
-      this.eduArr[e.target.id] = this.eduObj;
-    }
+    this.eduObj.displayed = "";
+    this.eduArr[e.target.id] = this.eduObj;
     this.setState({ education: this.eduArr }, function () {
       console.log(this.state.education);
     });
@@ -160,6 +177,7 @@ class App extends Component {
         start: "",
         end: "",
         submitted: "",
+        displayed: "hidden",
       }),
     });
   };
@@ -173,18 +191,20 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <h1>Contact</h1>
+      <div className="mx-auto col-4 d-flex flex-column">
+        <h1 className="align-self-center">CV App</h1>
+        <h2 className="mt-3">Contact</h2>
         <Contact
           name={this.state.contact.name}
           email={this.state.contact.email}
           phone={this.state.contact.phone}
           submitted={this.state.contact.submitted}
+          displayTog={this.state.contact.displayed}
           handleContact={this.handleContactChange}
           handleSubmit={this.handleContactSubmit}
           handleEdit={this.handleContactEdit}
         />
-        <h1>Experience</h1>
+        <h2 className="mt-4 pt-3 border-top">Experience</h2>
         {this.state.experience.map((ex, index) => (
           <Experience
             index={index}
@@ -195,14 +215,19 @@ class App extends Component {
             start={ex.start}
             end={ex.end}
             submitted={ex.submitted}
+            displayTog={ex.displayed}
             handleChange={this.handleExpChange}
             handleSubmit={this.handleExpSubmit}
             handleAdd={this.handleExpAdd}
             handleEdit={this.handleExpEdit}
           />
         ))}
-        <button onClick={this.handleExpAdd}>Add </button>
-        <h1>Education</h1>
+        <button
+          onClick={this.handleExpAdd}
+          className="btn btn-primary mt-2 addBtn">
+          Add{" "}
+        </button>
+        <h2 className="mt-4 pt-3 border-top">Education</h2>
         {this.state.education.map((ed, index) => (
           <Education
             index={index}
@@ -212,14 +237,19 @@ class App extends Component {
             start={ed.start}
             end={ed.end}
             submitted={ed.submitted}
+            displayTog={ed.displayed}
             handleChange={this.handleEduChange}
             handleSubmit={this.handleEduSubmit}
             handleAdd={this.handleEduAdd}
             handleEdit={this.handleEduEdit}
           />
         ))}
-        <button onClick={this.handleEduAdd}>Add </button>
-      </React.Fragment>
+        <button
+          onClick={this.handleEduAdd}
+          className="btn btn-primary mt-2 addBtn">
+          Add{" "}
+        </button>
+      </div>
     );
   }
 }
